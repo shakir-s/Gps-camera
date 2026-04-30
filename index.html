@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoCam - GPS Camera App</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="ph ph-camera"></i>
+                <h1>GeoCam</h1>
+            </div>
+            <button id="toggle-stamp-btn" class="icon-btn active" title="Toggle Location Stamp">
+                <i class="ph-fill ph-map-pin"></i>
+            </button>
+        </header>
+
+        <!-- Main Camera Area -->
+        <main class="camera-area">
+            <div class="video-container" id="video-container">
+                <video id="camera-feed" autoplay playsinline></video>
+                <div id="loading-overlay" class="overlay active">
+                    <i class="ph ph-spinner ph-spin loader-icon"></i>
+                    <p id="loading-text">Requesting camera access...</p>
+                </div>
+                
+                <!-- Location data preview (Live view overlay) -->
+                <div id="live-location-badge" class="location-badge hidden">
+                    <p id="live-address" class="address-text">Fetching location...</p>
+                    <div class="coords-row">
+                        <span id="live-latlng" class="latlng-text"></span>
+                        <span id="live-time" class="time-text"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- Canvas for capturing and drawing, hidden by default -->
+            <canvas id="capture-canvas" style="display: none;"></canvas>
+        </main>
+
+        <!-- Controls -->
+        <footer class="controls-area">
+            <button id="gallery-btn" class="secondary-btn" title="Gallery (Coming soon)">
+                <i class="ph ph-images"></i>
+            </button>
+            <button id="capture-btn" class="capture-btn disabled" disabled aria-label="Take Photo">
+                <div class="inner-circle"></div>
+            </button>
+            <button id="switch-camera-btn" class="secondary-btn" title="Switch Camera">
+                <i class="ph ph-arrows-clockwise"></i>
+            </button>
+        </footer>
+
+        <!-- Preview Modal -->
+        <div id="preview-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Preview</h2>
+                    <button id="close-preview-btn" class="icon-btn">
+                        <i class="ph ph-x"></i>
+                    </button>
+                </div>
+                <div class="preview-image-container">
+                    <img id="preview-image" src="" alt="Captured Image">
+                </div>
+                <div class="modal-actions">
+                    <button id="retake-btn" class="btn btn-secondary">
+                        <i class="ph ph-arrow-u-up-left"></i> Retake
+                    </button>
+                    <a id="download-btn" class="btn btn-primary" download="geocam-capture.jpg">
+                        <i class="ph ph-download-simple"></i> Save Photo
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Toast Notification -->
+        <div id="toast" class="toast hidden"></div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
