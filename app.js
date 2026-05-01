@@ -85,15 +85,33 @@ galleryBtn.addEventListener('click', () => {
 
 // --- Camera Logic ---
 
-let lastOrientationWasPortrait = null;
+let currentRatioMode = 'portrait';
+const videoContainer = document.getElementById('video-container');
+const btnPortrait = document.getElementById('btn-portrait');
+const btnLandscape = document.getElementById('btn-landscape');
 
-window.addEventListener('resize', () => {
-    if (!currentStream) return;
-    const isNowPortrait = window.innerHeight > window.innerWidth;
-    if (lastOrientationWasPortrait !== null && isNowPortrait !== lastOrientationWasPortrait) {
-        lastOrientationWasPortrait = isNowPortrait;
-        setupCamera();
-    }
+function updateRatioUI() {
+    btnPortrait.classList.toggle('active', currentRatioMode === 'portrait');
+    btnLandscape.classList.toggle('active', currentRatioMode === 'landscape');
+    
+    videoContainer.classList.remove('portrait', 'landscape');
+    videoContainer.classList.add(currentRatioMode);
+}
+
+btnPortrait.addEventListener('click', async () => {
+    if (currentRatioMode === 'portrait') return;
+    currentRatioMode = 'portrait';
+    updateRatioUI();
+    loadingOverlay.classList.add('active');
+    await setupCamera();
+});
+
+btnLandscape.addEventListener('click', async () => {
+    if (currentRatioMode === 'landscape') return;
+    currentRatioMode = 'landscape';
+    updateRatioUI();
+    loadingOverlay.classList.add('active');
+    await setupCamera();
 });
 
 async function setupCamera() {
@@ -102,8 +120,7 @@ async function setupCamera() {
     }
 
     try {
-        const isPortrait = window.innerHeight > window.innerWidth;
-        lastOrientationWasPortrait = isPortrait;
+        const isPortrait = currentRatioMode === 'portrait';
         const targetAspectRatio = isPortrait ? 9/16 : 16/9;
         
         const constraints = {
@@ -212,9 +229,32 @@ toggleStampBtn.addEventListener('click', () => {
 captureBtn.addEventListener('click', () => {
     if (captureBtn.disabled) return;
     
-    // Set canvas dimensions to match video source
-    captureCanvas.width = video.videoWidth;
-    captureCanvas.height = video.videoHeight;
+    // Target dimensions
+    const isPortrait = currentRatioMode === 'portrait';
+    const targetW = isPortrait ? 720 : 1280;
+    const targetH = isPortrait ? 1280 : 720;
+    
+    captureCanvas.width = targetW;
+    captureCanvas.height = targetH;
+    
+    // Calculate aspect ratio crop logic to mimic object-fit: cover
+    const videoRatio = video.videoWidth / video.videoHeight;
+    const targetRatio = targetW / targetH;
+    
+    let drawWidth = targetW;
+    let drawHeight = targetH;
+    let offsetX = 0;
+    let offsetY = 0;
+    
+    if (videoRatio > targetRatio) {
+        // Video is wider than target
+        drawWidth = targetH * videoRatio;
+        offsetX = (targetW - drawWidth) / 2;
+    } else {
+        // Video is taller than target
+        drawHeight = targetW / videoRatio;
+        offsetY = (targetH - drawHeight) / 2;
+    }
     
     // Draw the current video frame
     // Handle mirroring if using front camera
@@ -223,7 +263,7 @@ captureBtn.addEventListener('click', () => {
         ctx.scale(-1, 1);
     }
     
-    ctx.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
+    ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
     
     // Reset transform before drawing text to avoid mirrored text
     ctx.setTransform(1, 0, 0, 1, 0, 0);
