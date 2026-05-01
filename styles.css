@@ -18,6 +18,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -178,7 +179,8 @@ body {
 #camera-feed {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background-color: #000;
 }
 
 .overlay {
@@ -386,10 +388,13 @@ body {
 
 .modal-actions {
     display: flex;
+    flex-direction: row;
+    justify-content: stretch;
     gap: 16px;
     padding: 20px;
     padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     background: var(--bg-surface);
+    width: 100%;
 }
 
 .btn {
@@ -399,6 +404,7 @@ body {
     align-items: center;
     gap: 8px;
     padding: 14px 20px;
+    min-height: 48px;
     border-radius: var(--radius-md);
     font-size: 15px;
     font-weight: 600;
@@ -406,6 +412,8 @@ body {
     border: none;
     transition: var(--transition);
     text-decoration: none;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .btn i {

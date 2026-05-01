@@ -85,17 +85,33 @@ galleryBtn.addEventListener('click', () => {
 
 // --- Camera Logic ---
 
+let lastOrientationWasPortrait = null;
+
+window.addEventListener('resize', () => {
+    if (!currentStream) return;
+    const isNowPortrait = window.innerHeight > window.innerWidth;
+    if (lastOrientationWasPortrait !== null && isNowPortrait !== lastOrientationWasPortrait) {
+        lastOrientationWasPortrait = isNowPortrait;
+        setupCamera();
+    }
+});
+
 async function setupCamera() {
     if (currentStream) {
         currentStream.getTracks().forEach(track => track.stop());
     }
 
     try {
+        const isPortrait = window.innerHeight > window.innerWidth;
+        lastOrientationWasPortrait = isPortrait;
+        const targetAspectRatio = isPortrait ? 9/16 : 16/9;
+        
         const constraints = {
             video: {
                 facingMode: currentFacingMode,
-                width: { ideal: 1920 },
-                height: { ideal: 1080 }
+                aspectRatio: { ideal: targetAspectRatio },
+                width: { ideal: isPortrait ? 1080 : 1920 },
+                height: { ideal: isPortrait ? 1920 : 1080 }
             },
             audio: false
         };
