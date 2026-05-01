@@ -184,13 +184,9 @@ toggleStampBtn.addEventListener('click', () => {
     isStampEnabled = !isStampEnabled;
     toggleStampBtn.classList.toggle('active', isStampEnabled);
     
-    // update icon visually
-    const icon = toggleStampBtn.querySelector('i');
     if (isStampEnabled) {
-        icon.className = 'ph-fill ph-map-pin';
         liveBadge.classList.remove('hidden');
     } else {
-        icon.className = 'ph ph-map-pin-line';
         liveBadge.classList.add('hidden');
     }
 });
@@ -311,16 +307,20 @@ function drawLocationStamp() {
         ctx.restore();
         
         // Draw red pin
-        ctx.fillStyle = '#ea4335';
         const pinX = mapX + mapSize / 2;
         const pinY = mapY + mapSize / 2;
+        
+        ctx.fillStyle = '#E43E36';
         ctx.beginPath();
-        ctx.arc(pinX, pinY - 4*scale, 6*scale, 0, Math.PI * 2);
+        ctx.arc(pinX, pinY - 8*scale, 8*scale, Math.PI, 0);
+        ctx.quadraticCurveTo(pinX + 8*scale, pinY, pinX, pinY + 12*scale);
+        ctx.quadraticCurveTo(pinX - 8*scale, pinY, pinX - 8*scale, pinY - 8*scale);
         ctx.fill();
+        
+        // Inner dark circle
+        ctx.fillStyle = '#6B231E';
         ctx.beginPath();
-        ctx.moveTo(pinX - 6*scale, pinY - 4*scale);
-        ctx.lineTo(pinX + 6*scale, pinY - 4*scale);
-        ctx.lineTo(pinX, pinY + 8*scale);
+        ctx.arc(pinX, pinY - 8*scale, 3.5*scale, 0, Math.PI * 2);
         ctx.fill();
         
         // Draw Google watermark

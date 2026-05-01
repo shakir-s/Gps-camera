@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>GeoCam - GPS Camera App</title>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,10 @@
                 <h1>GeoCam</h1>
             </div>
             <button id="toggle-stamp-btn" class="icon-btn active" title="Toggle Location Stamp">
-                <i class="ph-fill ph-map-pin"></i>
+                <svg width="22" height="22" viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path class="pin-bg" d="M12 0C5.373 0 0 5.373 0 12C0 21 12 30 12 30C12 30 24 21 24 12C24 5.373 18.627 0 12 0Z"/>
+                    <circle class="pin-dot" cx="12" cy="12" r="5"/>
+                </svg>
             </button>
         </header>
 
