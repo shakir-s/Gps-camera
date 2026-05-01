@@ -30,15 +30,7 @@
 
         <!-- Main Camera Area -->
         <main class="camera-area">
-            <div class="aspect-ratio-toggle">
-                <button id="btn-portrait" class="ratio-btn active" data-ratio="portrait">
-                    <i class="ph ph-device-mobile"></i> Portrait
-                </button>
-                <button id="btn-landscape" class="ratio-btn" data-ratio="landscape">
-                    <i class="ph ph-device-mobile-camera" style="transform: rotate(90deg)"></i> Landscape
-                </button>
-            </div>
-            <div class="video-container portrait" id="video-container">
+            <div class="video-container" id="video-container">
                 <video id="camera-feed" autoplay playsinline></video>
                 <div id="loading-overlay" class="overlay active">
                     <i class="ph ph-spinner ph-spin loader-icon"></i>
