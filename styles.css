@@ -344,6 +344,13 @@ body {
     transform: translateY(100%);
 }
 
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -379,6 +386,7 @@ body {
     display: flex;
     gap: 16px;
     padding: 20px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     background: var(--bg-surface);
 }
 
